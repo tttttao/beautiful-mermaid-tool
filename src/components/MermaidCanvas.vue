@@ -7,6 +7,7 @@ import type { ExportOptions, RenderStatus } from '@/types/mermaid'
 
 const props = defineProps<{
   source: string
+  isDark?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -37,20 +38,39 @@ const {
 
 const isReady = computed(() => status.value === 'ready' || Boolean(lastSuccessfulSvg.value))
 
-const themeOptions = {
-  bg: '#FBFCFE',
-  fg: '#102033',
-  accent: '#0F6CDD',
-  line: '#5F7894',
-  muted: '#71839A',
-  surface: '#F7FAFD',
-  border: '#C7D4E4',
-  padding: 56,
-  font: 'Manrope',
-  nodeSpacing: 30,
-  layerSpacing: 52,
-  componentSpacing: 28,
-}
+const themeOptions = computed(() => {
+  if (props.isDark) {
+    return {
+      bg: '#0F172A', // slate-900
+      fg: '#F8FAFC', // slate-50
+      accent: '#38BDF8', // sky-400
+      line: '#94A3B8', // slate-400
+      muted: '#64748B', // slate-500
+      surface: '#1E293B', // slate-800
+      border: '#334155', // slate-700
+      padding: 56,
+      font: 'Manrope',
+      nodeSpacing: 30,
+      layerSpacing: 52,
+      componentSpacing: 28,
+    }
+  }
+
+  return {
+    bg: '#FBFCFE',
+    fg: '#102033',
+    accent: '#0F6CDD',
+    line: '#5F7894',
+    muted: '#71839A',
+    surface: '#F7FAFD',
+    border: '#C7D4E4',
+    padding: 56,
+    font: 'Manrope',
+    nodeSpacing: 30,
+    layerSpacing: 52,
+    componentSpacing: 28,
+  }
+})
 
 function downloadDataUrl(url: string, fileName: string) {
   const link = document.createElement('a')
@@ -164,7 +184,7 @@ async function exportPng(options: ExportOptions = {}) {
     canvas.width = Math.round(exportWidth * pixelRatio)
     canvas.height = Math.round(exportHeight * pixelRatio)
     context.scale(pixelRatio, pixelRatio)
-    context.fillStyle = backgroundColor
+    context.fillStyle = options.backgroundColor ?? themeOptions.value.bg
     context.fillRect(0, 0, exportWidth, exportHeight)
     context.drawImage(image, 0, 0, exportWidth, exportHeight)
 
@@ -182,7 +202,7 @@ async function renderDiagram(source: string) {
   status.value = 'rendering'
 
   try {
-    const markup = renderMermaidSVG(source, themeOptions)
+    const markup = renderMermaidSVG(source, themeOptions.value)
     svgMarkup.value = markup
     lastSuccessfulSvg.value = markup
     errorMessage.value = ''
@@ -236,6 +256,13 @@ watch(
   },
 )
 
+watch(
+  () => props.isDark,
+  () => {
+    void renderDiagram(props.source)
+  },
+)
+
 const resizeObserver = new ResizeObserver(() => {
   if (!hasFittedInitially.value) return
   if (isDefaultView.value) {
@@ -265,20 +292,20 @@ defineExpose({
 </script>
 
 <template>
-  <section class="relative h-full min-h-[360px] overflow-hidden rounded-[32px] border border-white/70 bg-white/70 shadow-soft backdrop-blur">
+  <section class="relative h-full min-h-[360px] overflow-hidden rounded-[32px] border border-white/70 bg-white/70 dark:border-white/10 dark:bg-slate-800/80 shadow-soft backdrop-blur transition-colors">
     <div class="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-6 py-4">
       <div>
-        <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Preview</p>
-        <h2 class="mt-1 text-lg font-semibold text-slate-900">Infinite Canvas</h2>
+        <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400 dark:text-slate-500">Preview</p>
+        <h2 class="mt-1 text-lg font-semibold text-slate-900 dark:text-slate-200">Infinite Canvas</h2>
       </div>
-      <div class="rounded-full bg-white/85 px-3 py-1 text-xs font-medium text-slate-500 shadow-sm backdrop-blur">
+      <div class="rounded-full bg-white/85 dark:bg-slate-900/85 px-3 py-1 text-xs font-medium text-slate-500 dark:text-slate-400 shadow-sm backdrop-blur">
         {{ Math.round(cameraState.scale * 100) }}%
       </div>
     </div>
 
     <div
       v-if="errorMessage"
-      class="absolute left-6 right-24 top-24 z-10 rounded-2xl border border-amber-200 bg-amber-50/95 px-4 py-3 text-sm text-amber-800 shadow-sm backdrop-blur"
+      class="absolute left-6 right-24 top-24 z-10 rounded-2xl border border-amber-200 bg-amber-50/95 dark:border-amber-900/50 dark:bg-amber-900/30 dark:text-amber-200 px-4 py-3 text-sm text-amber-800 shadow-sm backdrop-blur"
     >
       {{ errorMessage }}
     </div>
@@ -287,7 +314,7 @@ defineExpose({
       <div ref="stageRef" class="absolute left-0 top-0 origin-top-left will-change-transform">
         <div
           ref="svgHostRef"
-          class="rounded-[28px] border border-slate-200/80 bg-[#fbfcfe] p-4 shadow-[0_24px_64px_rgba(15,23,42,0.08)]"
+          class="rounded-[28px] border border-slate-200/80 bg-[#fbfcfe] dark:border-white/5 dark:bg-[#0F172A] p-4 shadow-[0_24px_64px_rgba(15,23,42,0.08)] transition-colors"
           @dblclick="emit('fullscreen')"
         />
       </div>
@@ -295,16 +322,16 @@ defineExpose({
 
     <div
       v-if="status === 'rendering' && !svgMarkup"
-      class="absolute inset-0 flex items-center justify-center bg-white/40 backdrop-blur-sm"
+      class="absolute inset-0 flex items-center justify-center bg-white/40 dark:bg-slate-900/40 backdrop-blur-sm"
     >
-      <div class="rounded-full border border-white/70 bg-white/80 px-4 py-2 text-sm font-medium text-slate-600 shadow-sm">
+      <div class="rounded-full border border-white/70 bg-white/80 dark:border-slate-700 dark:bg-slate-800 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 shadow-sm">
         Rendering diagram…
       </div>
     </div>
 
     <div
       v-if="!isReady && status !== 'rendering'"
-      class="absolute inset-0 flex items-center justify-center text-sm font-medium text-slate-400"
+      class="absolute inset-0 flex items-center justify-center text-sm font-medium text-slate-400 dark:text-slate-500"
     >
       Start typing Mermaid syntax to see a preview.
     </div>

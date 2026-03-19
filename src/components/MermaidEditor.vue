@@ -5,6 +5,7 @@ import { getConfiguredMonaco } from '@/composables/useMermaidMonaco'
 
 const props = defineProps<{
   modelValue: string
+  isDark?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -24,7 +25,7 @@ onMounted(async () => {
   const model = monaco.editor.createModel(props.modelValue, 'mermaid')
   const editorInstance = monaco.editor.create(containerRef.value, {
     model,
-    theme: 'mermaid-soft',
+    theme: props.isDark ? 'mermaid-dark' : 'mermaid-soft',
     automaticLayout: true,
     fontFamily: 'JetBrains Mono, ui-monospace, SFMono-Regular, monospace',
     fontSize: 14,
@@ -56,6 +57,17 @@ onMounted(async () => {
 })
 
 watch(
+  () => props.isDark,
+  (isDark) => {
+    if (editor) {
+      import('monaco-editor').then((monaco) => {
+        monaco.editor.setTheme(isDark ? 'mermaid-dark' : 'mermaid-soft')
+      })
+    }
+  },
+)
+
+watch(
   () => props.modelValue,
   (value) => {
     if (!editor) {
@@ -80,13 +92,13 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section class="flex h-full min-h-[360px] flex-col overflow-hidden rounded-[28px] border border-white/70 bg-white/90 shadow-soft backdrop-blur">
-    <header class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+  <section class="flex h-full min-h-[360px] flex-col overflow-hidden rounded-[28px] border border-white/70 bg-white/90 dark:border-white/10 dark:bg-slate-800/90 shadow-soft backdrop-blur transition-colors">
+    <header class="flex items-center justify-between border-b border-slate-100 dark:border-white/10 px-6 py-4">
       <div>
-        <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400">Editor</p>
-        <h2 class="mt-1 text-lg font-semibold text-slate-900">Mermaid Source</h2>
+        <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400 dark:text-slate-500">Editor</p>
+        <h2 class="mt-1 text-lg font-semibold text-slate-900 dark:text-slate-200">Mermaid Source</h2>
       </div>
-      <div class="rounded-full bg-slate-50 px-3 py-1 text-xs font-medium text-slate-500">
+      <div class="rounded-full bg-slate-50 dark:bg-slate-900/50 px-3 py-1 text-xs font-medium text-slate-500 dark:text-slate-400">
         Live syntax highlighting
       </div>
     </header>

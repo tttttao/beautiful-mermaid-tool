@@ -46,6 +46,28 @@ function registerMermaidLanguage(instance: typeof monaco) {
     },
   })
 
+  instance.editor.defineTheme('mermaid-dark', {
+    base: 'vs-dark',
+    inherit: true,
+    rules: [
+      { token: 'keyword', foreground: '60A5FA', fontStyle: 'bold' },
+      { token: 'keyword.control', foreground: '93C5FD' },
+      { token: 'operators', foreground: 'A78BFA' },
+      { token: 'string', foreground: '2DD4BF' },
+      { token: 'comment', foreground: '64748B', fontStyle: 'italic' },
+      { token: 'number', foreground: 'FB923C' },
+    ],
+    colors: {
+      'editor.background': '#00000000', // Transparent so parent tailwind controls background
+      'editor.lineHighlightBackground': '#1E293B',
+      'editorLineNumber.foreground': '#475569',
+      'editorLineNumber.activeForeground': '#94A3B8',
+      'editorCursor.foreground': '#60A5FA',
+      'editor.selectionBackground': '#1E3A8A',
+      'editor.inactiveSelectionBackground': '#172554',
+    },
+  })
+
   isRegistered = true
 }
 

@@ -13,6 +13,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.dark {
+  color: #f8fafc;
+  background:
+    radial-gradient(circle at top, rgba(15, 108, 221, 0.15), transparent 40%),
+    linear-gradient(180deg, #0f172a 0%, #020617 100%);
+}
+
 html,
 body,
 #app {
@@ -37,6 +44,13 @@ textarea {
     linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
   background-size: 32px 32px;
   background-position: -1px -1px;
+}
+
+.dark .canvas-grid {
+  background-color: #0f172a;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }
 
 .monaco-editor,
