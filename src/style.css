@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #102033;
+  background:
+    radial-gradient(circle at top, rgba(15, 108, 221, 0.08), transparent 30%),
+    linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
+  font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.canvas-grid {
+  background-color: #fbfcfe;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+.monaco-editor,
+.monaco-editor .overflow-guard {
+  border-radius: 1.5rem;
+}

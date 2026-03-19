@@ -1,0 +1,61 @@
+import loader from '@monaco-editor/loader'
+import * as monaco from 'monaco-editor'
+import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
+
+let isRegistered = false
+
+function registerMermaidLanguage(instance: typeof monaco) {
+  if (isRegistered) {
+    return
+  }
+
+  instance.languages.register({ id: 'mermaid' })
+  instance.languages.setMonarchTokensProvider('mermaid', {
+    tokenizer: {
+      root: [
+        [/\b(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram-v2|erDiagram|journey|gantt|mindmap|timeline|quadrantChart|gitGraph|pie|xychart-beta|requirementDiagram|C4Context|C4Container|C4Component|C4Dynamic|C4Deployment)\b/, 'keyword'],
+        [/\b(subgraph|direction|participant|actor|class|state|title|section|accTitle|accDescr|note|loop|alt|opt|par|critical|and|else|end)\b/, 'keyword.control'],
+        [/-->|==>|-.->|---|===|~~~|o--o|x--x|o-->|x-->|\|.*?\|/, 'operators'],
+        [/\[[^\]]*\]|\([^\)]*\)|\{[^\}]*\}|>[^<\n]*]|"[^"]*"/, 'string'],
+        [/\b\d+\b/, 'number'],
+        [/\b[A-Za-z_][\w-]*\b/, 'identifier'],
+        [/%%.*$/, 'comment'],
+      ],
+    },
+  })
+
+  instance.editor.defineTheme('mermaid-soft', {
+    base: 'vs',
+    inherit: true,
+    rules: [
+      { token: 'keyword', foreground: '0F6CDD', fontStyle: 'bold' },
+      { token: 'keyword.control', foreground: '2563EB' },
+      { token: 'operators', foreground: '7C3AED' },
+      { token: 'string', foreground: '0F766E' },
+      { token: 'comment', foreground: '94A3B8', fontStyle: 'italic' },
+      { token: 'number', foreground: 'EA580C' },
+    ],
+    colors: {
+      'editor.background': '#FFFFFF',
+      'editor.lineHighlightBackground': '#F5F9FF',
+      'editorLineNumber.foreground': '#B6C2D2',
+      'editorLineNumber.activeForeground': '#6B7B92',
+      'editorCursor.foreground': '#0F6CDD',
+      'editor.selectionBackground': '#DCEAFE',
+      'editor.inactiveSelectionBackground': '#EAF1FB',
+    },
+  })
+
+  isRegistered = true
+}
+
+export async function getConfiguredMonaco() {
+  ;(self as typeof self & { MonacoEnvironment?: { getWorker: () => Worker } }).MonacoEnvironment = {
+    getWorker: () => new editorWorker(),
+  }
+
+  loader.config({ monaco })
+  const instance = await loader.init()
+  registerMermaidLanguage(instance)
+  return instance
+}
