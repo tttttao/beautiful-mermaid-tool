@@ -111,7 +111,8 @@ onUnmounted(() => {
           {{ Math.round(cameraState.scale * 100) }}%
         </div>
         <button
-          class="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white/90 backdrop-blur transition hover:bg-black/60"
+          class="pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full bg-black/40 text-white/90 backdrop-blur transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black/20"
+          title="Close fullscreen"
           aria-label="Close fullscreen"
           @click.stop="emit('close')"
         >
