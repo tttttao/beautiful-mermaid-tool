@@ -278,6 +278,8 @@ defineExpose({
 
     <div
       v-if="errorMessage"
+      role="alert"
+      aria-live="assertive"
       class="absolute left-6 right-24 top-24 z-10 rounded-2xl border border-amber-200 bg-amber-50/95 px-4 py-3 text-sm text-amber-800 shadow-sm backdrop-blur"
     >
       {{ errorMessage }}
