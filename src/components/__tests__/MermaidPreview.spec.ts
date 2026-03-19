@@ -134,13 +134,15 @@ describe('readNaturalSize logic', () => {
 const MOCK_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150"><rect width="200" height="150" fill="#fff"/><text x="100" y="75">Test</text></svg>'
 
 let mockEditorInstance: any = null
+let mockCreate = vi.fn()
 
 vi.mock('@/composables/useMermaidMonaco', () => ({
   getConfiguredMonaco: vi.fn(() =>
     Promise.resolve({
       editor: {
         createModel: vi.fn(() => ({ dispose: vi.fn() })),
-        create: vi.fn((_container: any) => {
+        create: vi.fn((_container: any, config: any) => {
+          mockCreate(_container, config)
           const listeners: Record<string, Function> = {}
           let value = ''
           const instance = {
@@ -162,6 +164,12 @@ vi.mock('@/composables/useMermaidMonaco', () => ({
       },
     }),
   ),
+}))
+
+vi.mock('monaco-editor', () => ({
+  editor: {
+    setTheme: vi.fn(),
+  },
 }))
 
 vi.mock('beautiful-mermaid', () => ({
@@ -216,6 +224,38 @@ describe('MermaidEditor component', () => {
     const emitted = wrapper.emitted('update:modelValue')
     expect(emitted).toBeDefined()
     expect(emitted!.length).toBeGreaterThan(0)
+  })
+
+  it('should switch theme correctly when isDark prop changes', async () => {
+    const { default: MermaidEditor } = await import('@/components/MermaidEditor.vue')
+    const monaco = await import('monaco-editor')
+
+    // Reset mock
+    mockCreate.mockClear()
+    monaco.editor.setTheme = vi.fn()
+
+    // Mount with light theme initially
+    const wrapper = mount(MermaidEditor, {
+      props: { modelValue: 'flowchart TD\n  A --> B', isDark: false },
+    })
+
+    await flushPromises()
+    await nextTick()
+
+    // Check if monaco.editor.create was called with mermaid-soft
+    expect(mockCreate).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ theme: 'mermaid-soft' })
+    )
+
+    // Now update isDark to true
+    await wrapper.setProps({ isDark: true })
+    await flushPromises()
+    // Since dynamic import is used in watch, wait a bit
+    await new Promise(r => setTimeout(r, 0))
+
+    // Check if setTheme was called with mermaid-dark
+    expect(monaco.editor.setTheme).toHaveBeenCalledWith('mermaid-dark')
   })
 
   it('should mount and render a container element', async () => {
