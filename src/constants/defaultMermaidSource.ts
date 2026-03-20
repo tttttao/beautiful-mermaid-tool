@@ -1,6 +1,6 @@
-export const DEFAULT_MERMAID_SOURCE = `flowchart TB
+export const DEFAULT_MERMAID_SOURCE = `flowchart LR
     subgraph TopLevelA
-        direction TB
+        direction LR
         nodeA1 --> nodeA2
         subgraph NestedB
             direction LR

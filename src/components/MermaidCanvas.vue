@@ -234,7 +234,7 @@ async function renderDiagram(source: string) {
         flowchart: {
           defaultRenderer: 'dagre-wrapper',
           nodeSpacing: 50,
-          rankSpacing: 50,
+          rankSpacing: 60,
           diagramPadding: 50,
           useMaxWidth: false,
         },
