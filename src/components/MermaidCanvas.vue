@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import mermaid from 'mermaid'
 import { renderMermaidSVG } from 'beautiful-mermaid'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+
+mermaid.initialize({ startOnLoad: false })
 
 import { useZoomPan } from '@/composables/useZoomPan'
 import type { ExportOptions, RenderStatus } from '@/types/mermaid'
@@ -71,6 +74,24 @@ const themeOptions = computed(() => {
     componentSpacing: 28,
   }
 })
+
+const getMermaidFallbackTheme = () => {
+  const theme = themeOptions.value
+  return {
+    primaryColor: theme.surface,
+    primaryTextColor: theme.fg,
+    primaryBorderColor: theme.border,
+    lineColor: theme.line,
+    secondaryColor: theme.accent,
+    tertiaryColor: theme.bg,
+    mainBkg: theme.bg,
+    nodeBorder: theme.border,
+    clusterBkg: theme.surface,
+    clusterBorder: theme.border,
+    defaultLinkColor: theme.line,
+    fontFamily: theme.font,
+  }
+}
 
 function downloadDataUrl(url: string, fileName: string) {
   const link = document.createElement('a')
@@ -202,7 +223,30 @@ async function renderDiagram(source: string) {
   status.value = 'rendering'
 
   try {
-    const markup = renderMermaidSVG(source, themeOptions.value)
+    let markup = ''
+    if (source.includes('subgraph')) {
+      // Fallback: Use official mermaid with dagre-d3 for better nested subgraph support
+      mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: 'loose',
+        theme: 'base',
+        themeVariables: getMermaidFallbackTheme(),
+        flowchart: {
+          defaultRenderer: 'dagre-wrapper',
+          nodeSpacing: 50,
+          rankSpacing: 50,
+          diagramPadding: 50,
+          useMaxWidth: false,
+        },
+      })
+      const id = `mermaid-fallback-${crypto.randomUUID().replace(/-/g, '')}`
+      const { svg } = await mermaid.render(id, source)
+      markup = svg
+    } else {
+      // Fast path: use beautiful-mermaid layout engine
+      markup = renderMermaidSVG(source, themeOptions.value)
+    }
+
     svgMarkup.value = markup
     lastSuccessfulSvg.value = markup
     errorMessage.value = ''
@@ -211,7 +255,7 @@ async function renderDiagram(source: string) {
     await nextTick()
 
     const svg = getSvgNode()
-    if (!svg) throw new Error('Beautiful Mermaid did not return an SVG element.')
+    if (!svg) throw new Error('Rendering engine did not return an SVG element.')
 
     svg.style.display = 'block'
     svg.style.overflow = 'visible'
@@ -227,6 +271,8 @@ async function renderDiagram(source: string) {
   } catch (error) {
     status.value = 'error'
     errorMessage.value = error instanceof Error ? error.message : 'Unable to render Mermaid diagram.'
+
+    // Fallback error cleanup is handled inside the try/catch around mermaid.render
     emit('error', errorMessage.value)
 
     if (lastSuccessfulSvg.value) {

@@ -1,9 +1,11 @@
-export const DEFAULT_MERMAID_SOURCE = `flowchart TD
-    Start([User opens tool]) --> Input[Write Mermaid syntax]
-    Input --> Render{Debounced render}
-    Render -->|Valid| Preview[Preview updates on canvas]
-    Render -->|Invalid| Error[Keep last good diagram]
-    Preview --> Zoom[Zoom and pan freely]
-    Zoom --> Export[Export crisp PNG]
-    Export --> Done([Share diagram])
-`
+export const DEFAULT_MERMAID_SOURCE = `flowchart TB
+    subgraph TopLevelA
+        direction TB
+        nodeA1 --> nodeA2
+        subgraph NestedB
+            direction LR
+            nodeB1 --> nodeB2
+        end
+        nodeA2 --> nodeB1
+    end
+    nodeA1 --> TopLevelA`;
