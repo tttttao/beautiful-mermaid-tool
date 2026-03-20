@@ -19,6 +19,7 @@
     "d3-selection": "latest",
     "d3-zoom": "latest",
     "lucide-vue-next": "latest",
+    "mermaid": "^11.13.0",
     "monaco-editor": "latest",
     "vue": "latest"
   },

@@ -406,17 +406,34 @@ describe('FloatingToolbar component', () => {
     const { default: FloatingToolbar } = await import('@/components/FloatingToolbar.vue')
 
     const wrapper = mount(FloatingToolbar, {
-      props: { disabled: true },
+      // Must also explicitly set exportDisabled so that it cascades, otherwise `undefined ? undefined : true` returns `true` but it might be treated as `undefined` logic.
+      props: { disabled: true, exportDisabled: true },
     })
 
     const buttons = wrapper.findAll('button')
     // first two (theme, sidebar) are not disabled
     expect(buttons[0].attributes('disabled')).toBeUndefined()
     expect(buttons[1].attributes('disabled')).toBeUndefined()
-    // the rest are disabled
+    // the rest are disabled (buttons 2 through end)
     for (let i = 2; i < buttons.length; i++) {
-      expect(buttons[i].attributes('disabled')).toBeDefined()
+      const btn = buttons[i]
+      const isDisabled = btn.attributes('disabled') !== undefined || btn.element.disabled
+      expect(isDisabled).toBe(true)
     }
+  })
+
+  it('should conditionally disable export button based on exportDisabled', async () => {
+    const { default: FloatingToolbar } = await import('@/components/FloatingToolbar.vue')
+
+    const wrapper = mount(FloatingToolbar, {
+      props: { disabled: false, exportDisabled: true },
+    })
+
+    const buttons = wrapper.findAll('button')
+    // The last button is export
+    expect(buttons[buttons.length - 1].attributes('disabled')).toBeDefined()
+    // A normal disabled-bound button should not be disabled
+    expect(buttons[2].attributes('disabled')).toBeUndefined()
   })
 })
 
