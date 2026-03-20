@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import mermaid from 'mermaid'
+// @ts-ignore
+import mermaid from 'mermaid/dist/mermaid.min.js'
 import { renderMermaidSVG } from 'beautiful-mermaid'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
@@ -227,7 +228,11 @@ async function exportPng(options: ExportOptions = {}) {
     } catch (e: any) {
         if (e.name === 'SecurityError') {
            console.warn("Tainted canvas detected, downloading SVG fallback.")
-           downloadDataUrl(svgUrl, options.fileName ?? `beautiful-mermaid-${stamp}.png`)
+           // Ensure fallback has the correct .svg extension
+           const fallbackFileName = options.fileName
+             ? options.fileName.replace(/\.png$/i, '.svg')
+             : `beautiful-mermaid-${stamp}.svg`
+           downloadDataUrl(svgUrl, fallbackFileName)
         } else {
            throw e;
         }
