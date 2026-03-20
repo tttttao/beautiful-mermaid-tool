@@ -98,13 +98,17 @@ test.describe('Mermaid Tool – Core Flows', () => {
   // Core Flow 3: PNG Export
   // -----------------------------------------------------------------------
   test('should trigger a PNG download when export button is clicked', async ({ page }) => {
+    page.on('console', msg => console.log('BROWSER_LOG:', msg.text()))
+    page.on('pageerror', err => console.log('BROWSER_ERROR:', err))
+
     const svg = page.locator('svg').first()
     await expect(svg).toBeVisible({ timeout: 10_000 })
 
+    const exportButton = page.locator('button[aria-label="Export PNG"]')
+    await expect(exportButton).toBeEnabled({ timeout: 10_000 })
+
     const downloadPromise = page.waitForEvent('download', { timeout: 15_000 })
 
-    const exportButton = page.locator('button[aria-label="Export PNG"]')
-    await expect(exportButton).toBeVisible()
     await exportButton.click()
 
     const download = await downloadPromise

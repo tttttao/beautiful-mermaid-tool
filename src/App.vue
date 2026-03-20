@@ -82,7 +82,8 @@ function handleLoad(loadedSource: string) {
             @fullscreen="openFullscreen"
           />
           <FloatingToolbar
-            :disabled="!canvasRef"
+            :disabled="!canvasRef?.isReady"
+            :export-disabled="!canvasRef?.canExport"
             :is-dark="isDark"
             @toggle-dark="toggleDark()"
             @save="handleSave"

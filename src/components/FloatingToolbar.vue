@@ -3,6 +3,7 @@ import { Download, History, Maximize2, Minus, Moon, Plus, RotateCcw, Save, Sun }
 
 defineProps<{
   disabled?: boolean
+  exportDisabled?: boolean
   isDark?: boolean
 }>()
 
@@ -48,7 +49,7 @@ const buttonClass =
     <button :class="buttonClass" :disabled="disabled" type="button" title="Fullscreen preview" aria-label="Fullscreen preview" @click="emit('fullscreen')">
       <Maximize2 class="h-5 w-5 transition duration-200 group-hover:scale-110" />
     </button>
-    <button :class="buttonClass" :disabled="disabled" type="button" title="Export PNG" aria-label="Export PNG" @click="emit('export')">
+    <button :class="buttonClass" :disabled="exportDisabled ?? disabled" type="button" title="Export PNG" aria-label="Export PNG" @click="emit('export')">
       <Download class="h-5 w-5 transition duration-200 group-hover:translate-y-0.5" />
     </button>
   </div>
