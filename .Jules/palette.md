@@ -1,0 +1,4 @@
+
+## 2024-05-19 - Adding Accessible Visual Feedback to Action Buttons
+**Learning:** Adding dynamic ARIA labels (e.g., swapping `aria-label="Save Chart"` to `aria-label="Saved!"` temporarily) alongside a color-differentiated visual icon significantly improves both screen-reader accessibility and visual confidence for micro-interactions without disrupting layout. Applying Tailwind text colors directly to child icons instead of the parent button avoids frustrating class priority collisions with hover/focus states defined on the parent element.
+**Action:** When implementing temporary success states on icon-only buttons, always temporarily override both the visual icon (with a distinct color class placed directly on the icon SVG) and the `aria-label`/`title` attributes to ensure all users receive immediate feedback without needing full toast notifications.
