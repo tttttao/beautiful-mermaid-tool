@@ -37,7 +37,7 @@ function truncateCode(code: string, maxLength = 80) {
     <div class="flex h-full flex-col bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-l border-slate-200 dark:border-white/10">
       <div class="flex items-center justify-between px-6 py-5 border-b border-slate-200 dark:border-white/10">
         <div class="flex items-center gap-2">
-          <Clock class="h-5 w-5 text-slate-500 dark:text-slate-400" />
+          <Clock class="h-5 w-5 text-slate-500 dark:text-slate-400" aria-hidden="true" />
           <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Local History</h2>
         </div>
         <button
@@ -47,13 +47,13 @@ function truncateCode(code: string, maxLength = 80) {
           aria-label="Close history"
           @click="emit('close')"
         >
-          <X class="h-5 w-5" />
+          <X class="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
 
       <div class="flex-1 overflow-y-auto p-4">
         <div v-if="history.length === 0" class="flex flex-col items-center justify-center h-full text-center text-slate-500 dark:text-slate-400">
-          <Clock class="h-12 w-12 mb-4 opacity-20" />
+          <Clock class="h-12 w-12 mb-4 opacity-20" aria-hidden="true" />
           <p>No history yet.</p>
           <p class="text-sm mt-1">Saved charts will appear here.</p>
         </div>
@@ -73,7 +73,7 @@ function truncateCode(code: string, maxLength = 80) {
                 aria-label="Delete item"
                 @click.stop="emit('delete', item.id)"
               >
-                <Trash2 class="h-4 w-4" />
+                <Trash2 class="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
             <pre class="font-mono text-xs text-slate-700 dark:text-slate-300 overflow-hidden text-ellipsis whitespace-nowrap">{{ truncateCode(item.source) }}</pre>
