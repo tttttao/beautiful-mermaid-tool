@@ -116,7 +116,7 @@ onUnmounted(() => {
           aria-label="Close fullscreen"
           @click.stop="emit('close')"
         >
-          <X class="h-5 w-5" />
+          <X class="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
     </div>

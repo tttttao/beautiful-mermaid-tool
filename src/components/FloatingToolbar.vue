@@ -24,32 +24,32 @@ const buttonClass =
 <template>
   <div class="absolute bottom-6 right-6 z-20 flex flex-wrap items-center justify-end gap-3 max-w-[calc(100%-3rem)]">
     <button :class="buttonClass" type="button" title="Toggle Theme" aria-label="Toggle Theme" @click="emit('toggleDark')">
-      <Moon v-if="!isDark" class="h-5 w-5 transition duration-200 group-hover:scale-110" />
-      <Sun v-else class="h-5 w-5 transition duration-200 group-hover:scale-110" />
+      <Moon v-if="!isDark" class="h-5 w-5 transition duration-200 group-hover:scale-110" aria-hidden="true" />
+      <Sun v-else class="h-5 w-5 transition duration-200 group-hover:scale-110" aria-hidden="true" />
     </button>
     <button :class="buttonClass" type="button" title="History" aria-label="History" @click="emit('toggleSidebar')">
-      <History class="h-5 w-5 transition duration-200 group-hover:scale-110" />
+      <History class="h-5 w-5 transition duration-200 group-hover:scale-110" aria-hidden="true" />
     </button>
     <button :class="buttonClass" :disabled="disabled" type="button" title="Save Chart" aria-label="Save Chart" @click="emit('save')">
-      <Save class="h-5 w-5 transition duration-200 group-hover:scale-110" />
+      <Save class="h-5 w-5 transition duration-200 group-hover:scale-110" aria-hidden="true" />
     </button>
 
     <div class="w-[1px] h-8 bg-slate-200 dark:bg-slate-700 mx-1"></div>
 
     <button :class="buttonClass" :disabled="disabled" type="button" title="Zoom out" aria-label="Zoom out" @click="emit('zoomOut')">
-      <Minus class="h-5 w-5 transition duration-200 group-hover:scale-110" />
+      <Minus class="h-5 w-5 transition duration-200 group-hover:scale-110" aria-hidden="true" />
     </button>
     <button :class="buttonClass" :disabled="disabled" type="button" title="Reset view" aria-label="Reset view" @click="emit('reset')">
-      <RotateCcw class="h-5 w-5 transition duration-200 group-hover:-rotate-45" />
+      <RotateCcw class="h-5 w-5 transition duration-200 group-hover:-rotate-45" aria-hidden="true" />
     </button>
     <button :class="buttonClass" :disabled="disabled" type="button" title="Zoom in" aria-label="Zoom in" @click="emit('zoomIn')">
-      <Plus class="h-5 w-5 transition duration-200 group-hover:scale-110" />
+      <Plus class="h-5 w-5 transition duration-200 group-hover:scale-110" aria-hidden="true" />
     </button>
     <button :class="buttonClass" :disabled="disabled" type="button" title="Fullscreen preview" aria-label="Fullscreen preview" @click="emit('fullscreen')">
-      <Maximize2 class="h-5 w-5 transition duration-200 group-hover:scale-110" />
+      <Maximize2 class="h-5 w-5 transition duration-200 group-hover:scale-110" aria-hidden="true" />
     </button>
     <button :class="buttonClass" :disabled="disabled" type="button" title="Export PNG" aria-label="Export PNG" @click="emit('export')">
-      <Download class="h-5 w-5 transition duration-200 group-hover:translate-y-0.5" />
+      <Download class="h-5 w-5 transition duration-200 group-hover:translate-y-0.5" aria-hidden="true" />
     </button>
   </div>
 </template>
