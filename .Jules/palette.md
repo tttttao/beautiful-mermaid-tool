@@ -1,0 +1,3 @@
+## 2024-04-13 - Sync Save Action Visual Feedback
+**Learning:** When adding temporary visual feedback (e.g., swapping icons) to buttons that perform synchronous actions, applying color classes directly to the icon element prevents Tailwind class precedence collisions with the parent button. Additionally, dynamically updating the button's `aria-label` and `title` simultaneously ensures the status change is properly announced to screen readers. Finally, using `clearTimeout` is essential to prevent overlapping state resets during rapid successive clicks.
+**Action:** Implemented a 'Saved!' visual feedback state in `FloatingToolbar.vue` using a timeout, directly styling the Check icon and conditionally updating the parent button's aria-label and title.
