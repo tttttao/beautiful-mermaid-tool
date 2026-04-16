@@ -1,0 +1,3 @@
+## 2024-04-16 - Add visual feedback state to Save button in FloatingToolbar
+**Learning:** Adding visual confirmation via temporary state changes (like swapping icons and updating `aria-label`/`title` attributes dynamically) gives users immediate reassurance that an action (such as saving a chart) was successful, without needing disruptive toast notifications or layout shifts.
+**Action:** Implemented a brief (2-second) toggle to display a 'Check' icon instead of the 'Save' icon upon successful click, ensuring the change is screen-reader accessible by simultaneously updating the button's title and ARIA attributes.
