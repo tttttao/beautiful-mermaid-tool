@@ -1,0 +1,3 @@
+## 2024-05-18 - Dynamic Accessible State Announcements
+**Learning:** When adding inline temporary feedback to buttons (like swapping an icon for 2 seconds), simply swapping the `aria-label` isn't always announced by screen readers if focus remains on the element but the inner DOM node changes. Wrapping the container with `aria-live="polite"` ensures that when the title/ARIA-label or icon changes dynamically (e.g. from "Save Chart" to "Saved!"), the update is queued and read reliably.
+**Action:** Always combine dynamic `aria-label`/`title` bindings with `aria-live="polite"` when building multi-state buttons that swap text or icons post-interaction.
