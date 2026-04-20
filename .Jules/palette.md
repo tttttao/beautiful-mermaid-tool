@@ -1,0 +1,3 @@
+## 2026-04-20 - Save Button Interaction Feedback
+**Learning:** When using `setTimeout` to orchestrate temporary state changes for visual feedback (e.g. swapping a save icon for a checkmark), rapid successive clicks can cause overlapping timeouts, leading to buggy, premature state resets. Also, combining dynamic `aria-label` bindings with `aria-live="polite"` on an interactive container successfully ensures screen readers announce the state change seamlessly without requiring focus to shift.
+**Action:** Always capture the timeout ID when initiating a temporary UI state and explicitly call `clearTimeout` before setting a new one, ensuring the visual feedback duration remains consistent regardless of user interaction speed.
