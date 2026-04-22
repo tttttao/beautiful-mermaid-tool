@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Download, History, Maximize2, Minus, Moon, Plus, RotateCcw, Save, Sun } from 'lucide-vue-next'
+import { ref } from 'vue'
+import { Check, Download, History, Maximize2, Minus, Moon, Plus, RotateCcw, Save, Sun } from 'lucide-vue-next'
 
 defineProps<{
   disabled?: boolean
@@ -19,6 +20,29 @@ const emit = defineEmits<{
 
 const buttonClass =
   'group flex h-12 w-12 items-center justify-center rounded-2xl border border-white/70 bg-white/90 text-slate-600 shadow-float backdrop-blur transition duration-200 hover:-translate-y-0.5 hover:bg-white hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:bg-slate-800/90 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200'
+
+const showSaveFeedback = ref(false)
+const showExportFeedback = ref(false)
+let saveTimeout: ReturnType<typeof setTimeout>
+let exportTimeout: ReturnType<typeof setTimeout>
+
+function handleSave() {
+  emit('save')
+  showSaveFeedback.value = true
+  clearTimeout(saveTimeout)
+  saveTimeout = setTimeout(() => {
+    showSaveFeedback.value = false
+  }, 2000)
+}
+
+function handleExport() {
+  emit('export')
+  showExportFeedback.value = true
+  clearTimeout(exportTimeout)
+  exportTimeout = setTimeout(() => {
+    showExportFeedback.value = false
+  }, 2000)
+}
 </script>
 
 <template>
@@ -30,8 +54,9 @@ const buttonClass =
     <button :class="buttonClass" type="button" title="History" aria-label="History" @click="emit('toggleSidebar')">
       <History class="h-5 w-5 transition duration-200 group-hover:scale-110" />
     </button>
-    <button :class="buttonClass" :disabled="disabled" type="button" title="Save Chart" aria-label="Save Chart" @click="emit('save')">
-      <Save class="h-5 w-5 transition duration-200 group-hover:scale-110" />
+    <button :class="buttonClass" :disabled="disabled" type="button" :title="showSaveFeedback ? 'Chart saved!' : 'Save Chart'" :aria-label="showSaveFeedback ? 'Chart saved!' : 'Save Chart'" aria-live="polite" @click="handleSave">
+      <Check v-if="showSaveFeedback" class="h-5 w-5 text-emerald-500 dark:text-emerald-400 transition duration-200" />
+      <Save v-else class="h-5 w-5 transition duration-200 group-hover:scale-110" />
     </button>
 
     <div class="w-[1px] h-8 bg-slate-200 dark:bg-slate-700 mx-1"></div>
@@ -48,8 +73,9 @@ const buttonClass =
     <button :class="buttonClass" :disabled="disabled" type="button" title="Fullscreen preview" aria-label="Fullscreen preview" @click="emit('fullscreen')">
       <Maximize2 class="h-5 w-5 transition duration-200 group-hover:scale-110" />
     </button>
-    <button :class="buttonClass" :disabled="disabled" type="button" title="Export PNG" aria-label="Export PNG" @click="emit('export')">
-      <Download class="h-5 w-5 transition duration-200 group-hover:translate-y-0.5" />
+    <button :class="buttonClass" :disabled="disabled" type="button" :title="showExportFeedback ? 'PNG exported!' : 'Export PNG'" :aria-label="showExportFeedback ? 'PNG exported!' : 'Export PNG'" aria-live="polite" @click="handleExport">
+      <Check v-if="showExportFeedback" class="h-5 w-5 text-emerald-500 dark:text-emerald-400 transition duration-200" />
+      <Download v-else class="h-5 w-5 transition duration-200 group-hover:translate-y-0.5" />
     </button>
   </div>
 </template>
