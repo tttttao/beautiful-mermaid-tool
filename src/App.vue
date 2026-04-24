@@ -51,6 +51,10 @@ function handleSave() {
 function handleLoad(loadedSource: string) {
   source.value = loadedSource
 }
+
+function handleCopy() {
+  navigator.clipboard.writeText(source.value)
+}
 </script>
 
 <template>
@@ -87,6 +91,7 @@ function handleLoad(loadedSource: string) {
             @toggle-dark="toggleDark()"
             @save="handleSave"
             @toggle-sidebar="isSidebarOpen = !isSidebarOpen"
+            @copy="handleCopy"
             @zoom-in="canvasRef?.zoomIn()"
             @zoom-out="canvasRef?.zoomOut()"
             @reset="canvasRef?.resetView()"

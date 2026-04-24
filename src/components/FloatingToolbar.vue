@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Download, History, Maximize2, Minus, Moon, Plus, RotateCcw, Save, Sun } from 'lucide-vue-next'
+import { Check, Copy, Download, History, Maximize2, Minus, Moon, Plus, RotateCcw, Save, Sun } from 'lucide-vue-next'
+import { ref } from 'vue'
 
 defineProps<{
   disabled?: boolean
@@ -15,20 +16,44 @@ const emit = defineEmits<{
   toggleDark: []
   save: []
   toggleSidebar: []
+  copy: []
 }>()
+
+const isCopied = ref(false)
+let copyTimeout: ReturnType<typeof setTimeout> | null = null
+
+function handleCopy() {
+  emit('copy')
+  isCopied.value = true
+  if (copyTimeout) clearTimeout(copyTimeout)
+  copyTimeout = setTimeout(() => {
+    isCopied.value = false
+  }, 2000)
+}
 
 const buttonClass =
   'group flex h-12 w-12 items-center justify-center rounded-2xl border border-white/70 bg-white/90 text-slate-600 shadow-float backdrop-blur transition duration-200 hover:-translate-y-0.5 hover:bg-white hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:bg-slate-800/90 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200'
 </script>
 
 <template>
-  <div class="absolute bottom-6 right-6 z-20 flex flex-wrap items-center justify-end gap-3 max-w-[calc(100%-3rem)]">
+  <div class="absolute bottom-6 right-6 z-20 flex flex-wrap items-center justify-end gap-3 max-w-[calc(100%-3rem)]" aria-live="polite">
     <button :class="buttonClass" type="button" title="Toggle Theme" aria-label="Toggle Theme" @click="emit('toggleDark')">
       <Moon v-if="!isDark" class="h-5 w-5 transition duration-200 group-hover:scale-110" />
       <Sun v-else class="h-5 w-5 transition duration-200 group-hover:scale-110" />
     </button>
     <button :class="buttonClass" type="button" title="History" aria-label="History" @click="emit('toggleSidebar')">
       <History class="h-5 w-5 transition duration-200 group-hover:scale-110" />
+    </button>
+    <button
+      :class="buttonClass"
+      :disabled="disabled"
+      type="button"
+      :title="isCopied ? 'Copied!' : 'Copy source code'"
+      :aria-label="isCopied ? 'Copied!' : 'Copy source code'"
+      @click="handleCopy"
+    >
+      <Check v-if="isCopied" class="h-5 w-5 text-emerald-500 transition duration-200 scale-110" />
+      <Copy v-else class="h-5 w-5 transition duration-200 group-hover:scale-110" />
     </button>
     <button :class="buttonClass" :disabled="disabled" type="button" title="Save Chart" aria-label="Save Chart" @click="emit('save')">
       <Save class="h-5 w-5 transition duration-200 group-hover:scale-110" />
