@@ -1,0 +1,3 @@
+## 2024-04-26 - Accessible Button Visual Feedback
+**Learning:** When adding temporary visual feedback states (like swap-to-check) to buttons in Tailwind/Vue without moving focus, apply color classes directly to the icon elements to avoid Tailwind class precedence collisions on the parent container. Additionally, combine dynamic `aria-label`/`title` bindings with `aria-live="polite"` on the container to ensure screen readers reliably announce the inline state change.
+**Action:** Use this combined pattern (icon-level coloring + `aria-live="polite"` + dynamic labels) as the standard for non-navigating, inline success feedback across the design system. Always use `clearTimeout` to prevent overlapping state resets from rapid successive clicks.
