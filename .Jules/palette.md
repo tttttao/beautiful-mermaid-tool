@@ -1,0 +1,3 @@
+## 2024-05-01 - Add Visual Feedback to Icon-Only Action Buttons
+**Learning:** When users click standalone action buttons (like "Save" or "Export" in a floating toolbar), they expect immediate confirmation. Without a full toast notification system, swapping the icon to a checkmark for 2 seconds provides essential visual confirmation. To make this accessible without moving focus, it's critical to dynamically swap the `aria-label` and `title` attributes while pairing the button container with `aria-live="polite"`.
+**Action:** Always wrap `emit` calls for direct, non-navigational actions in a handler that toggles a success state `ref` and clears any existing `setTimeout` to prevent buggy rapid-click resets.
