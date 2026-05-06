@@ -44,10 +44,10 @@ function truncateCode(code: string, maxLength = 80) {
           type="button"
           class="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300 transition-colors"
           title="Close history"
-          aria-label="Close history"
           @click="emit('close')"
         >
-          <X class="h-5 w-5" />
+          <span class="sr-only">Close history</span>
+          <X class="h-5 w-5" aria-hidden="true" />
         </button>
       </div>
 
@@ -70,10 +70,10 @@ function truncateCode(code: string, maxLength = 80) {
                 type="button"
                 class="rounded p-1.5 text-slate-400 opacity-0 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 group-hover:opacity-100 transition-all focus:opacity-100"
                 title="Delete item"
-                aria-label="Delete item"
                 @click.stop="emit('delete', item.id)"
               >
-                <Trash2 class="h-4 w-4" />
+                <span class="sr-only">Delete item</span>
+                <Trash2 class="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
             <pre class="font-mono text-xs text-slate-700 dark:text-slate-300 overflow-hidden text-ellipsis whitespace-nowrap">{{ truncateCode(item.source) }}</pre>
