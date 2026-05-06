@@ -1,0 +1,3 @@
+## 2026-05-06 - Accessible Icon Feedback
+**Learning:** Adding screen reader support via `aria-live` correctly announces feedback in real time. However, to prevent double announcements (e.g., 'Chart saved' followed by 'Save Chart' when timeout reverts), success/feedback messages are better separated into a visually hidden `aria-live` element dedicated to alerts, keeping the primary button label distinct from the state.
+**Action:** When creating visual feedback for buttons, implement a separate `aria-live` wrapper for the success state, rather than simply updating the button's primary screen-reader text on timeout.
