@@ -63,8 +63,8 @@ function handleLoad(loadedSource: string) {
             Design crisp Mermaid diagrams in a calm, browser-native workspace.
           </h1>
         </div>
-        <div class="flex items-center gap-3 self-start rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-slate-950/10">
-          <span class="h-2.5 w-2.5 rounded-full" :class="renderError ? 'bg-amber-300' : 'bg-emerald-300'" />
+        <div aria-live="polite" class="flex items-center gap-3 self-start rounded-full bg-slate-950 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-slate-950/10">
+          <span aria-hidden="true" class="h-2.5 w-2.5 rounded-full" :class="renderError ? 'bg-amber-300' : 'bg-emerald-300'" />
           {{ statusText }}
         </div>
       </header>
