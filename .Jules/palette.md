@@ -1,0 +1,3 @@
+## 2024-05-13 - Separating Visual vs Accessible Feedback for Temporary Button States
+**Learning:** When a button temporarily changes state (e.g., swapping a Save icon to a Checkmark for 2 seconds), dynamically updating its `aria-label` or `title` can cause screen readers to miss the announcement or read it twice (if focus remains). It's more reliable to leave the button's static label alone and use a dedicated, visually hidden `aria-live="polite"` element to explicitly announce the success state (e.g., "Chart saved to history").
+**Action:** Always implement temporary visual success states alongside independent `aria-live` regions, rather than overloading the interactive element's accessible name.
