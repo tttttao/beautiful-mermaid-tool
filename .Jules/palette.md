@@ -1,0 +1,3 @@
+## 2024-05-14 - Screen Reader Feedback on Interactive Buttons
+**Learning:** Adding temporary screen reader feedback to buttons (e.g., when saving or exporting) can result in double announcements if done by dynamically changing the button's `aria-label` or `title`. This is because screen readers announce both the new label of the focused button and the live region changes if they are combined.
+**Action:** When providing accessible feedback for temporary button state changes (like showing a checkmark), separate the accessible feedback message into a visually hidden `aria-live="polite"` element instead of modifying the primary button's accessible name.
