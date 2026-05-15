@@ -1,10 +1,23 @@
 <script setup lang="ts">
-import { Download, History, Maximize2, Minus, Moon, Plus, RotateCcw, Save, Sun } from 'lucide-vue-next'
+import { Check, Download, History, Maximize2, Minus, Moon, Plus, RotateCcw, Save, Sun } from 'lucide-vue-next'
+import { ref } from 'vue'
 
 defineProps<{
   disabled?: boolean
   isDark?: boolean
 }>()
+
+const isSaved = ref(false)
+let saveTimeout: ReturnType<typeof setTimeout> | null = null
+
+function handleSave() {
+  emit('save')
+  isSaved.value = true
+  if (saveTimeout) clearTimeout(saveTimeout)
+  saveTimeout = setTimeout(() => {
+    isSaved.value = false
+  }, 2000)
+}
 
 const emit = defineEmits<{
   zoomIn: []
@@ -30,8 +43,9 @@ const buttonClass =
     <button :class="buttonClass" type="button" title="History" aria-label="History" @click="emit('toggleSidebar')">
       <History class="h-5 w-5 transition duration-200 group-hover:scale-110" />
     </button>
-    <button :class="buttonClass" :disabled="disabled" type="button" title="Save Chart" aria-label="Save Chart" @click="emit('save')">
-      <Save class="h-5 w-5 transition duration-200 group-hover:scale-110" />
+    <button :class="buttonClass" :disabled="disabled" type="button" title="Save Chart" aria-label="Save Chart" @click="handleSave">
+      <Save v-if="!isSaved" class="h-5 w-5 transition duration-200 group-hover:scale-110" />
+      <Check v-else class="h-5 w-5 text-emerald-500 transition duration-200 group-hover:scale-110" />
     </button>
 
     <div class="w-[1px] h-8 bg-slate-200 dark:bg-slate-700 mx-1"></div>
@@ -51,5 +65,8 @@ const buttonClass =
     <button :class="buttonClass" :disabled="disabled" type="button" title="Export PNG" aria-label="Export PNG" @click="emit('export')">
       <Download class="h-5 w-5 transition duration-200 group-hover:translate-y-0.5" />
     </button>
+    <span aria-live="polite" class="sr-only">
+      {{ isSaved ? 'Chart saved to history' : '' }}
+    </span>
   </div>
 </template>
