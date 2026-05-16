@@ -1,0 +1,3 @@
+## 2024-05-16 - Add visual and accessible feedback for the "Save Chart" action
+**Learning:** Adding a temporary success state icon (like a checkmark) directly to an icon-only button significantly improves user confidence without cluttering the interface. To maintain accessibility, using a separate visually hidden `aria-live` element ensures the success state is correctly announced to screen readers without interrupting or overriding the button's primary ARIA label.
+**Action:** When implementing temporary visual feedback for icon-only buttons, swap the icon element directly and place the accessibility announcement in a separate `aria-live="polite"` container elsewhere in the template.
