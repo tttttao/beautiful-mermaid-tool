@@ -1,0 +1,3 @@
+## 2025-02-23 - Separating Aria-Live for Temporary Visual Feedback
+**Learning:** When applying temporary visual feedback to buttons (like swapping an icon for a few seconds), modifying the main button's `aria-label` or `title` dynamically can cause screen readers to announce confusing or double states.
+**Action:** Instead of mutating the button's attributes, separate the accessible feedback message into a distinct, visually hidden `aria-live="polite"` element. Also, always use `clearTimeout` when resetting state in a timeout to prevent rapid successive clicks from creating overlapping, buggy resets.
