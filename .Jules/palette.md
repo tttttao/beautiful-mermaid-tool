@@ -1,0 +1,3 @@
+## 2024-02-27 - Separate Accessible State Announcements
+**Learning:** When adding temporary visual feedback to buttons (like swapping an icon for 2 seconds), directly changing the primary button's `aria-label` or `title` can cause screen readers to read the label twice or announce it awkwardly.
+**Action:** Separate the accessible feedback message into a distinct, visually hidden `aria-live="polite"` element rather than dynamically swapping the primary button's label. This ensures a clean, single announcement.
