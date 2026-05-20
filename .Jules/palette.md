@@ -1,0 +1,3 @@
+## 2024-05-20 - Adding visual feedback to the Save action
+**Learning:** Temporary visual states (e.g. replacing an icon with a checkmark for 2 seconds) provide crucial user feedback, but must be accompanied by `aria-live` announcements to ensure screen reader users receive the same confirmation. The visually hidden element helps prevent double announcements and keeps generic selectors clean.
+**Action:** Always include a dedicated, visually hidden `aria-live` element when adding temporary visual success feedback, and ensure timeouts are cleared in `onBeforeUnmount` to prevent overlapping states.
