@@ -1,0 +1,3 @@
+## 2024-05-21 - Accessible Temporary Visual Feedback
+**Learning:** When adding temporary visual feedback to UI components (e.g., swapping a save icon for a checkmark for 1.5s), dynamically updating the button's `aria-label` or `title` can lead to missed or double announcements by screen readers, depending on the timing.
+**Action:** Separate the accessible feedback from the dynamic button attributes. Create a distinct, visually hidden `aria-live="polite"` element specifically for the announcement (e.g., "Chart saved to history"). Use `v-if` or equivalent to conditionally render the announcement when the temporary state is active. This ensures screen readers announce the success state clearly while keeping the button's core `aria-label` stable.
