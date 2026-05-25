@@ -1,0 +1,3 @@
+## 2025-02-27 - Temporary button states and screen reader announcements
+**Learning:** When adding temporary visual feedback to buttons (like swapping a "Save" icon for a "Check" icon for a few seconds), changing the primary button's `title` or `aria-label` dynamically can cause screen readers to announce the change confusingly or double-announce if they are already focused on the button.
+**Action:** Instead of dynamically changing the button's ARIA label for temporary visual states, separate the accessible feedback message into a distinct, visually hidden `aria-live="polite"` element. This ensures the change is announced clearly without conflicting with the button's inherent label.
