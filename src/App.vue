@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useDark, useDebounceFn, useToggle } from '@vueuse/core'
+import { useClipboard, useDark, useDebounceFn, useToggle } from '@vueuse/core'
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 
 import FloatingToolbar from '@/components/FloatingToolbar.vue'
@@ -23,6 +23,7 @@ const isSidebarOpen = ref(false)
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 const { history, saveToHistory, deleteFromHistory } = useHistory()
+const { copy } = useClipboard()
 
 const syncDebouncedSource = useDebounceFn((value: string) => {
   debouncedSource.value = value
@@ -50,6 +51,10 @@ function handleSave() {
 
 function handleLoad(loadedSource: string) {
   source.value = loadedSource
+}
+
+function handleCopySource() {
+  copy(source.value)
 }
 </script>
 
@@ -92,6 +97,7 @@ function handleLoad(loadedSource: string) {
             @reset="canvasRef?.resetView()"
             @fullscreen="openFullscreen"
             @export="canvasRef?.exportPng()"
+            @copy-source="handleCopySource"
           />
         </div>
       </section>
