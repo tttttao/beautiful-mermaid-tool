@@ -381,7 +381,7 @@ describe('FloatingToolbar component', () => {
     })
 
     const buttons = wrapper.findAll('button')
-    expect(buttons.length).toBe(8)
+      expect(buttons.length).toBe(9)
 
     await buttons[0].trigger('click') // toggleDark
     await buttons[1].trigger('click') // toggleSidebar
@@ -390,7 +390,8 @@ describe('FloatingToolbar component', () => {
     await buttons[4].trigger('click') // reset
     await buttons[5].trigger('click') // zoomIn
     await buttons[6].trigger('click') // fullscreen
-    await buttons[7].trigger('click') // export
+      await buttons[7].trigger('click') // copy
+      await buttons[8].trigger('click') // export
 
     expect(wrapper.emitted('toggleDark')).toHaveLength(1)
     expect(wrapper.emitted('toggleSidebar')).toHaveLength(1)
