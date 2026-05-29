@@ -36,7 +36,7 @@ test.describe('Sidebar History Flow', () => {
     // Verify Sidebar is open and shows the history item
     const sidebar = page.locator('.fixed.inset-y-0.right-0')
     await expect(sidebar).toBeVisible()
-    await expect(page.getByText('Local History')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Local History' })).toBeVisible()
 
     // Expect the truncated text of what we just typed to be visible in the sidebar
     const historyItemText = sidebar.getByText('graph TD NewApp --> NewDb')
