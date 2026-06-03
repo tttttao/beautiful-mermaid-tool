@@ -381,19 +381,21 @@ describe('FloatingToolbar component', () => {
     })
 
     const buttons = wrapper.findAll('button')
-    expect(buttons.length).toBe(8)
+    expect(buttons.length).toBe(9)
 
     await buttons[0].trigger('click') // toggleDark
     await buttons[1].trigger('click') // toggleSidebar
-    await buttons[2].trigger('click') // save
-    await buttons[3].trigger('click') // zoomOut
-    await buttons[4].trigger('click') // reset
-    await buttons[5].trigger('click') // zoomIn
-    await buttons[6].trigger('click') // fullscreen
-    await buttons[7].trigger('click') // export
+    await buttons[2].trigger('click') // copyCode
+    await buttons[3].trigger('click') // save
+    await buttons[4].trigger('click') // zoomOut
+    await buttons[5].trigger('click') // reset
+    await buttons[6].trigger('click') // zoomIn
+    await buttons[7].trigger('click') // fullscreen
+    await buttons[8].trigger('click') // export
 
     expect(wrapper.emitted('toggleDark')).toHaveLength(1)
     expect(wrapper.emitted('toggleSidebar')).toHaveLength(1)
+    expect(wrapper.emitted('copyCode')).toHaveLength(1)
     expect(wrapper.emitted('save')).toHaveLength(1)
     expect(wrapper.emitted('zoomOut')).toHaveLength(1)
     expect(wrapper.emitted('reset')).toHaveLength(1)
@@ -410,11 +412,12 @@ describe('FloatingToolbar component', () => {
     })
 
     const buttons = wrapper.findAll('button')
-    // first two (theme, sidebar) are not disabled
+    // first three (theme, sidebar, copyCode) are not disabled
     expect(buttons[0].attributes('disabled')).toBeUndefined()
     expect(buttons[1].attributes('disabled')).toBeUndefined()
+    expect(buttons[2].attributes('disabled')).toBeUndefined()
     // the rest are disabled
-    for (let i = 2; i < buttons.length; i++) {
+    for (let i = 3; i < buttons.length; i++) {
       expect(buttons[i].attributes('disabled')).toBeDefined()
     }
   })

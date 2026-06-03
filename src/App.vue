@@ -51,6 +51,14 @@ function handleSave() {
 function handleLoad(loadedSource: string) {
   source.value = loadedSource
 }
+
+async function handleCopyCode() {
+  try {
+    await navigator.clipboard.writeText(source.value)
+  } catch (error) {
+    console.error('Failed to copy to clipboard:', error)
+  }
+}
 </script>
 
 <template>
@@ -86,6 +94,7 @@ function handleLoad(loadedSource: string) {
             :is-dark="isDark"
             @toggle-dark="toggleDark()"
             @save="handleSave"
+            @copy-code="handleCopyCode"
             @toggle-sidebar="isSidebarOpen = !isSidebarOpen"
             @zoom-in="canvasRef?.zoomIn()"
             @zoom-out="canvasRef?.zoomOut()"
