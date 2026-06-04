@@ -48,6 +48,14 @@ function handleSave() {
   saveToHistory(source.value)
 }
 
+async function handleCopyCode() {
+  try {
+    await navigator.clipboard.writeText(source.value)
+  } catch (err) {
+    console.error('Failed to copy text: ', err)
+  }
+}
+
 function handleLoad(loadedSource: string) {
   source.value = loadedSource
 }
@@ -87,6 +95,7 @@ function handleLoad(loadedSource: string) {
             @toggle-dark="toggleDark()"
             @save="handleSave"
             @toggle-sidebar="isSidebarOpen = !isSidebarOpen"
+            @copy="handleCopyCode"
             @zoom-in="canvasRef?.zoomIn()"
             @zoom-out="canvasRef?.zoomOut()"
             @reset="canvasRef?.resetView()"
