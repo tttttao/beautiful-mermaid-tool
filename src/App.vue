@@ -51,6 +51,10 @@ function handleSave() {
 function handleLoad(loadedSource: string) {
   source.value = loadedSource
 }
+
+function handleCopyCode() {
+  navigator.clipboard.writeText(source.value)
+}
 </script>
 
 <template>
@@ -92,6 +96,7 @@ function handleLoad(loadedSource: string) {
             @reset="canvasRef?.resetView()"
             @fullscreen="openFullscreen"
             @export="canvasRef?.exportPng()"
+            @copy-code="handleCopyCode"
           />
         </div>
       </section>
