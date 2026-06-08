@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Download, History, Maximize2, Minus, Moon, Plus, RotateCcw, Save, Sun } from 'lucide-vue-next'
+import { ref, onBeforeUnmount } from 'vue'
+import { Copy, Check, Download, History, Maximize2, Minus, Moon, Plus, RotateCcw, Save, Sun } from 'lucide-vue-next'
 
 defineProps<{
   disabled?: boolean
@@ -15,7 +16,24 @@ const emit = defineEmits<{
   toggleDark: []
   save: []
   toggleSidebar: []
+  copyCode: []
 }>()
+
+const isCopied = ref(false)
+let copyTimeout: ReturnType<typeof setTimeout> | null = null
+
+function handleCopy() {
+  emit('copyCode')
+  isCopied.value = true
+  if (copyTimeout) clearTimeout(copyTimeout)
+  copyTimeout = setTimeout(() => {
+    isCopied.value = false
+  }, 2000)
+}
+
+onBeforeUnmount(() => {
+  if (copyTimeout) clearTimeout(copyTimeout)
+})
 
 const buttonClass =
   'group flex h-12 w-12 items-center justify-center rounded-2xl border border-white/70 bg-white/90 text-slate-600 shadow-float backdrop-blur transition duration-200 hover:-translate-y-0.5 hover:bg-white hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:bg-slate-800/90 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200'
@@ -48,8 +66,16 @@ const buttonClass =
     <button :class="buttonClass" :disabled="disabled" type="button" title="Fullscreen preview" aria-label="Fullscreen preview" @click="emit('fullscreen')">
       <Maximize2 class="h-5 w-5 transition duration-200 group-hover:scale-110" />
     </button>
+    <button :class="buttonClass" :disabled="disabled" type="button" title="Copy code" aria-label="Copy code" @click="handleCopy">
+      <Check v-if="isCopied" class="h-5 w-5 text-emerald-500 transition duration-200" />
+      <Copy v-else class="h-5 w-5 transition duration-200 group-hover:scale-110" />
+    </button>
     <button :class="buttonClass" :disabled="disabled" type="button" title="Export PNG" aria-label="Export PNG" @click="emit('export')">
       <Download class="h-5 w-5 transition duration-200 group-hover:translate-y-0.5" />
     </button>
+
+    <div aria-live="polite" class="sr-only">
+      <span v-if="isCopied">Code copied to clipboard</span>
+    </div>
   </div>
 </template>
