@@ -1,0 +1,3 @@
+## 2026-06-09 - Accessible Copy Button Visual Feedback
+**Learning:** When users click an icon-only 'copy' button, they need clear, immediate feedback. While changing the icon to a checkmark provides visual confirmation, screen readers might not announce this state change effectively unless paired with an `aria-live` region. However, directly changing `aria-label` or `title` dynamically can cause double announcements. Separating the accessible feedback message into a distinct, visually hidden `aria-live` element prevents conflicts and ensures smooth UX for all users.
+**Action:** For temporary state changes (like 'Copied!'), use a dedicated visually hidden `aria-live='polite'` element to announce the state, rather than mutating the primary button's `aria-label`.
