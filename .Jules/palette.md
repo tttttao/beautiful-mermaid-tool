@@ -1,0 +1,3 @@
+## 2024-06-10 - Separation of Visual and Accessible Feedback for Temporary Button States
+**Learning:** When implementing temporary visual feedback on buttons (e.g., swapping a Save icon for a Check icon via a `setTimeout`), modifying the button's `aria-label` or `title` dynamically can cause screen readers to announce the change unpredictably, or fail to announce it contextually.
+**Action:** Use a dedicated, visually hidden `aria-live="polite"` region separated from the button to manage the accessible announcement (e.g., "Chart saved to local history"). Keep the button's core `aria-label` consistent and focus on the visual swap for sighted users.
