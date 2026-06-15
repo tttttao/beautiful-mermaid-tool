@@ -1,0 +1,3 @@
+## 2025-02-20 - Adding temporary visual feedback to the Save button
+**Learning:** Using a distinct `aria-live` region combined with temporary icon swaps to provide feedback. Using a distinct visually hidden element to announce changes prevents double announcements from screen readers that might occur if the primary button's label were changed.
+**Action:** When adding temporary visual feedback to interactive elements, use a separate visually hidden `aria-live` region to handle screen reader announcements rather than modifying the button's `aria-label` or `title`. Also remember to clear any timeouts in component unmount hooks to prevent memory leaks.
