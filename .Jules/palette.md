@@ -1,0 +1,3 @@
+## 2026-06-16 - Accessible Temporary State Buttons
+**Learning:** When adding temporary visual feedback states to buttons (like swapping an icon for 2 seconds), dynamically changing the primary button `aria-label` or `title` can cause screen readers to announce both the old and new states simultaneously or incorrectly.
+**Action:** Use a separate, visually hidden `aria-live="polite"` element to announce the success state (e.g. "Copied to clipboard") rather than dynamically swapping the primary button's `aria-label`. Keep the button's `aria-label` static to its primary action (e.g. "Copy Mermaid source").
