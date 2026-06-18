@@ -1,0 +1,3 @@
+## 2026-06-18 - Accessible Copy Button Feedback
+**Learning:** When adding temporary visual feedback states to buttons (like swapping a copy icon for a checkmark), dynamically changing the button's `aria-label` or `title` can cause screen readers to miss the update or announce it confusingly. Separating the feedback message into a distinct, visually hidden element with `aria-live="polite"` ensures reliable and clear announcements without double-announcing the button's purpose.
+**Action:** Always use a separate `aria-live="polite"` region for transient success/status messages on interactive elements rather than mutating the primary element's accessible name.
