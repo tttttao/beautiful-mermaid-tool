@@ -1,0 +1,3 @@
+## 2024-06-21 - [Screen Reader Announcement Conflicts with Generic Locators]
+**Learning:** Adding a hidden `aria-live` region with specific text (e.g., "Chart saved to local history") can cause Playwright's generic `getByText` locators to fail due to strict mode violations if another element (like a heading) shares similar text (e.g., "Local History").
+**Action:** When updating UI components with accessibility announcements, review associated E2E tests and upgrade vague `getByText` queries to precise `getByRole` locators (e.g., `getByRole('heading', { name: 'Local History' })`) to ensure test resilience and verify proper semantic structure.
