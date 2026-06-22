@@ -1,0 +1,3 @@
+## 2025-02-28 - Visual feedback without double announcements
+**Learning:** When adding temporary visual feedback states (like "Saved!" checkmarks replacing a button icon), dynamically modifying the button's `aria-label` or `title` can cause double announcements for screen readers because the focus is still on the button.
+**Action:** Keep the static `aria-label` on the interactive element and use a separate, visually hidden `<span aria-live="polite" class="sr-only">` block to announce the dynamic state changes independently. Also, always ensure to clear existing `setTimeout` timers on `onBeforeUnmount` to prevent ghost state updates and memory leaks.
