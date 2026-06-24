@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useClipboard } from '@vueuse/core'
+import { Copy, Check } from 'lucide-vue-next'
 
 import { getConfiguredMonaco } from '@/composables/useMermaidMonaco'
 
@@ -11,6 +13,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   'update:modelValue': [value: string]
 }>()
+
+const { copy, copied } = useClipboard()
 
 const containerRef = ref<HTMLElement | null>(null)
 let editor: import('monaco-editor').editor.IStandaloneCodeEditor | null = null
@@ -98,8 +102,23 @@ onBeforeUnmount(() => {
         <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400 dark:text-slate-500">Editor</p>
         <h2 class="mt-1 text-lg font-semibold text-slate-900 dark:text-slate-200">Mermaid Source</h2>
       </div>
-      <div class="rounded-full bg-slate-50 dark:bg-slate-900/50 px-3 py-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-        Live syntax highlighting
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          class="group flex items-center gap-1.5 rounded-full bg-slate-50 dark:bg-slate-900/50 px-3 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+          title="Copy source code"
+          aria-label="Copy source code"
+          @click="copy(props.modelValue)"
+        >
+          <Check v-if="copied" class="h-3.5 w-3.5 text-emerald-500" />
+          <Copy v-else class="h-3.5 w-3.5 transition-transform group-hover:scale-110" />
+          <span>Copy</span>
+        </button>
+        <span aria-live="polite" class="sr-only">{{ copied ? 'Source code copied to clipboard' : '' }}</span>
+
+        <div class="hidden sm:block rounded-full bg-slate-50 dark:bg-slate-900/50 px-3 py-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+          Live syntax highlighting
+        </div>
       </div>
     </header>
 
