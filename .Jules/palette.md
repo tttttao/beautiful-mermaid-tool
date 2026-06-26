@@ -1,0 +1,3 @@
+## 2024-06-26 - Add visual feedback and a11y text to temporary button states
+**Learning:** When using `setTimeout` in Vue components to temporarily swap icons for visual feedback (e.g., showing a Check mark after Save), screen readers will not announce the state change if the accessible name simply changes dynamically. The ideal pattern is to use a persistent `<div aria-live="polite" class="sr-only">` block containing the feedback string that only renders while the temporary state is active.
+**Action:** Use an `aria-live` container combined with `v-if` for any future micro-UX states that disappear automatically, so screen readers catch the announcement without the user needing to move focus.
