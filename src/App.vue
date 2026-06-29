@@ -84,6 +84,7 @@ function handleLoad(loadedSource: string) {
           <FloatingToolbar
             :disabled="!canvasRef"
             :is-dark="isDark"
+            :source-code="source"
             @toggle-dark="toggleDark()"
             @save="handleSave"
             @toggle-sidebar="isSidebarOpen = !isSidebarOpen"
