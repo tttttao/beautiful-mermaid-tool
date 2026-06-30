@@ -1,0 +1,3 @@
+## 2024-07-01 - Clipboard Feedback with ARIA Live Regions
+**Learning:** When adding temporary visual feedback to buttons (like an icon changing to a checkmark after copying and reverting), dynamically changing the button's `aria-label` or `title` can cause double announcements or confusing feedback for screen readers depending on the exact timing and screen reader behavior.
+**Action:** Always separate the accessible feedback message into a distinct, visually hidden `aria-live="polite"` container element, rather than dynamically swapping the primary button's accessible name. Ensure to use `@vueuse/core`'s `useClipboard` for robust copy functionality.
