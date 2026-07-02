@@ -1,0 +1,3 @@
+## 2025-03-09 - Added 'Copy Source' button to Mermaid Editor header
+**Learning:** Adding a small utility button like "Copy Source" to the editor header improves workflow, especially for tools intended to generate text (like Mermaid markdown). However, updating the `aria-label` dynamically (`aria-label="copied ? 'Source code copied' : 'Copy source code'"`) isn't sufficient for a good screen reader experience because standard buttons don't reliably announce content changes automatically.
+**Action:** Used an explicit `aria-live="polite"` region that is visually hidden (`sr-only`) to confidently announce "Source code copied to clipboard" to screen readers when the state changes.
