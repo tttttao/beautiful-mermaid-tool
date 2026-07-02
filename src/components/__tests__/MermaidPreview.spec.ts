@@ -206,6 +206,16 @@ vi.mock('d3-zoom', () => ({
 // ---------------------------------------------------------------------------
 
 describe('MermaidEditor component', () => {
+    it('should have a copy button', async () => {
+    const { default: MermaidEditor } = await import('@/components/MermaidEditor.vue')
+    const wrapper = mount(MermaidEditor, {
+      props: { modelValue: 'flowchart TD' },
+    })
+
+    const copyBtn = wrapper.find('button[aria-label="Copy source code"]')
+    expect(copyBtn.exists()).toBe(true)
+  })
+
   it('should emit update:modelValue when editor content changes', async () => {
     const { default: MermaidEditor } = await import('@/components/MermaidEditor.vue')
 
