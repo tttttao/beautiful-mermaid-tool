@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useClipboard } from '@vueuse/core'
+import { Copy, Check } from 'lucide-vue-next'
 
 import { getConfiguredMonaco } from '@/composables/useMermaidMonaco'
 
@@ -7,6 +9,8 @@ const props = defineProps<{
   modelValue: string
   isDark?: boolean
 }>()
+
+const { copy, copied, isSupported } = useClipboard()
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
@@ -98,8 +102,22 @@ onBeforeUnmount(() => {
         <p class="text-xs font-semibold uppercase tracking-[0.28em] text-slate-400 dark:text-slate-500">Editor</p>
         <h2 class="mt-1 text-lg font-semibold text-slate-900 dark:text-slate-200">Mermaid Source</h2>
       </div>
-      <div class="rounded-full bg-slate-50 dark:bg-slate-900/50 px-3 py-1 text-xs font-medium text-slate-500 dark:text-slate-400">
-        Live syntax highlighting
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:block rounded-full bg-slate-50 dark:bg-slate-900/50 px-3 py-1 text-xs font-medium text-slate-500 dark:text-slate-400">
+          Live syntax highlighting
+        </div>
+        <button
+          v-if="isSupported"
+          type="button"
+          @click="copy(modelValue)"
+          title="Copy source code"
+          aria-label="Copy source code"
+          class="group flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-300"
+        >
+          <Check v-if="copied" class="h-4 w-4 text-emerald-500" />
+          <Copy v-else class="h-4 w-4 transition duration-200 group-hover:scale-110" />
+        </button>
+        <span class="sr-only" aria-live="polite">{{ copied ? 'Copied to clipboard' : '' }}</span>
       </div>
     </header>
 

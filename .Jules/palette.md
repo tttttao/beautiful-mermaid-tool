@@ -1,0 +1,3 @@
+## 2025-02-18 - Prevent Double Announcements in Action Buttons
+**Learning:** When creating buttons that provide temporary visual feedback (like a copy button where the icon changes to a checkmark), dynamically swapping the primary button's `aria-label` or `title` can cause screen readers to announce the change confusingly or read it twice.
+**Action:** Separate the accessible feedback message into a distinct, visually hidden element using `aria-live="polite"`. The button's label should remain constant (e.g., "Copy source code"), while the live region handles announcing the success state (e.g., "Copied to clipboard").
