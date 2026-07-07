@@ -1,0 +1,3 @@
+## 2024-05-18 - Visual and Accessible Feedback for Inline Actions
+**Learning:** Providing immediate, visually obvious feedback (like temporarily swapping an icon to a Check mark) alongside accessible, non-intrusive feedback (using a visually hidden `aria-live="polite"` region) greatly improves the perceived responsiveness and accessibility of the application when users perform inline actions like copying or saving.
+**Action:** When adding inline actions (e.g. Save, Copy, Export), implement a temporary success state visually (such as with a timeout to revert the icon) and include an `aria-live` element to announce the state to screen readers to ensure all users receive confirmation of their action.
