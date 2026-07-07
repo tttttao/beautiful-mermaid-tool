@@ -9,6 +9,14 @@ import FullscreenPreview from '@/components/FullscreenPreview.vue'
 import MermaidCanvas from '@/components/MermaidCanvas.vue'
 import { DEFAULT_MERMAID_SOURCE } from '@/constants/defaultMermaidSource'
 
+import { useClipboard } from '@vueuse/core'
+const { copy } = useClipboard()
+
+function copyToClipboard() {
+  copy(source.value)
+}
+
+
 const MermaidEditor = defineAsyncComponent(() => import('@/components/MermaidEditor.vue'))
 
 type MermaidCanvasExpose = InstanceType<typeof MermaidCanvas>
@@ -85,6 +93,7 @@ function handleLoad(loadedSource: string) {
             :disabled="!canvasRef"
             :is-dark="isDark"
             @toggle-dark="toggleDark()"
+            @copy-source="copyToClipboard"
             @save="handleSave"
             @toggle-sidebar="isSidebarOpen = !isSidebarOpen"
             @zoom-in="canvasRef?.zoomIn()"
